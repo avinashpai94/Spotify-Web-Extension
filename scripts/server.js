@@ -10,52 +10,6 @@ var repeat_val = {
     }
 }
 
-let express = require('express')
-let request = require('request')
-let querystring = require('querystring')
-
-
-console.log("Required");
-
-let app = express()
-
-let redirect_uri =
-    process.env.REDIRECT_URI ||
-    'http://localhost:8888/callback'
-
-app.get('/login', function (req, res) {
-    res.redirect('https://accounts.spotify.com/authorize?' +
-        querystring.stringify({
-            response_type: 'code',
-            client_id: process.env.SPOTIFY_CLIENT_ID,
-            scope: 'user-read-private user-read-email user-modify-playback-state',
-            redirect_uri
-        }))
-})
-
-app.get('/callback', function (req, res) {
-    let code = req.query.code || null
-    let authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
-        form: {
-            code: code,
-            redirect_uri,
-            grant_type: 'authorization_code'
-        },
-        headers: {
-            'Authorization': 'Basic ' + (new Buffer(
-                process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
-            ).toString('base64'))
-        },
-        json: true
-    }
-    request.post(authOptions, function (error, response, body) {
-        var access_token = body.access_token
-        let uri = process.env.FRONTEND_URI || 'http://localhost:5500/index.html'
-        res.redirect(uri + '?access_token=' + access_token)
-    })
-})
-
 function onPlay() {
     var play_icon = document.getElementById('play-button');
     if (playing) {

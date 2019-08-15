@@ -1,12 +1,12 @@
 {
-  "name": "electron-quick-start",
+  "name": "spotify-remote",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/avinashpai94/spotify-remote",
   "keywords": [
     "Electron",
     "quick",
@@ -18,5 +18,10 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^6.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0"
   }
 }

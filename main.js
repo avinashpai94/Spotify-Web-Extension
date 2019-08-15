@@ -1,6 +1,11 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+let express = require('express')
+let request = require('request')
+let querystring = require('querystring')
+
+let express_app = express()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -16,10 +21,12 @@ function createWindow () {
     }
   })
 
+  mainWindow.loadURL(`http://localhost:8888/login`)
+
   mainWindow.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  // mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -53,3 +60,46 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+
+let redirect_uri =
+  process.env.REDIRECT_URI ||
+  'http://localhost:8888/callback'
+
+express_app.get('/login', function (req, res) {
+  res.redirect('https://accounts.spotify.com/authorize?' +
+    querystring.stringify({
+      response_type: 'code',
+      client_id: process.env.SPOTIFY_CLIENT_ID,
+      scope: 'user-read-private user-read-email',
+      redirect_uri
+    }))
+})
+
+express_app.get('/callback', function (req, res) {
+  let code = req.query.code || null
+  let authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    form: {
+      code: code,
+      redirect_uri,
+      grant_type: 'authorization_code'
+    },
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(
+        process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
+      ).toString('base64'))
+    },
+    json: true
+  }
+  request.post(authOptions, function (error, response, body) {
+    var access_token = body.access_token
+    let uri = process.env.FRONTEND_URI || 'http://localhost:5500/index.html'
+    res.redirect(uri + '?access_token=' + access_token)
+  })
+})
+
+let port = process.env.PORT || 8888
+console.log(`Listening on port ${port}. Go /login to initiate authentication flow.`)
+express_app.listen(port)
