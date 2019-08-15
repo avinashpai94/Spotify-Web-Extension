@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="scripts/mediaplayer.js"></script>
+    <link rel="stylesheet" href='css/button-sheet.css'>
+    <title>spotify-remote</title>
+    <script>
+    </script>
+</head>
+
+<body>
+    <div class='main-container' id ='main'>
+        <div class='seek-container'>
+            <div class='seek-icon' id='song-name'></div>
+            <div class='seek-icon' id='song-artist'></div>
+            <div class='seek-icon' id='song-artwork'></div>
+            <div class='seek-icon' id='song-seek'></div>
+            <div class='seek-icon' id='song-pos'></div>
+        </div>
+        <div  class='button-container'>
+                <img id='shuffle-button' class='button-icon' src="icons/shuffle.svg" alt="" onclick="onShuffle()">
+                <img id='prev-button' class='button-icon' src="icons/previous.svg" alt="" onclick="onPrev()">
+                <img id='play-button' class='button-icon' src="icons/play.svg" alt="" onclick="onPlay()">
+                <img id='next-button' class='button-icon' src="icons/next.svg" alt="" onclick="onNext()">
+                <img id='repeat-button' class='button-icon' src="icons/repeat.svg" alt="" onclick="onRepeat()">
+        </div>
+    </div>
+</body>
+
+</html>
