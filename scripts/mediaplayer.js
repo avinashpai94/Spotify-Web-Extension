@@ -73,6 +73,4 @@ function onRepeat() {
     console.log(repeat_val.properties[repeat_val.value].name);
 }
 
-let port = process.env.PORT || 8888
-console.log(`Listening on port ${port}`)
-app.listen(port)
+
