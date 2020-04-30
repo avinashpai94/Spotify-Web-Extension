@@ -24,7 +24,7 @@
     "console": "^0.7.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jsdom": "^15.1.1",
     "querystring": "^0.2.0",
     "request": "^2.88.0",
